@@ -170,17 +170,19 @@ public class ViewStateMachine {
 
 		if let newView = store[state] {
             newView.alpha = animated ? 0.0 : 1.0
-            let insets = (newView as? StatefulPlaceholderView)?.placeholderViewInsets() ?? UIEdgeInsets()
+
+            containerView.addSubview(newView)
+            newView.frame = containerView.frame
 
             // Add new view using AutoLayout
-            containerView.addSubview(newView)
-
-            let metrics = ["top": insets.top, "bottom": insets.bottom, "left": insets.left, "right": insets.right]
-            let views = ["view": newView]
-            let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-left-[view]-right-|", options: [], metrics: metrics, views: views)
-            let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-top-[view]-bottom-|", options: [], metrics: metrics, views: views)
-            containerView.addConstraints(hConstraints)
-            containerView.addConstraints(vConstraints)
+            if let insets = (newView as? StatefulPlaceholderView)?.placeholderViewInsets() {
+                let metrics = ["top": insets.top, "bottom": insets.bottom, "left": insets.left, "right": insets.right]
+                let views = ["view": newView]
+                let hConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-left-[view]-right-|", options: [], metrics: metrics, views: views)
+                let vConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-top-[view]-bottom-|", options: [], metrics: metrics, views: views)
+                containerView.addConstraints(hConstraints)
+                containerView.addConstraints(vConstraints)
+            }
 		}
 
 		let animations: () -> () = {
