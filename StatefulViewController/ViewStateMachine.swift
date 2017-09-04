@@ -173,7 +173,6 @@ public class ViewStateMachine {
             let insets = (newView as? StatefulPlaceholderView)?.placeholderViewInsets() ?? UIEdgeInsets()
 
             // Add new view using AutoLayout
-            newView.translatesAutoresizingMaskIntoConstraints = false
             containerView.addSubview(newView)
 
             let metrics = ["top": insets.top, "bottom": insets.bottom, "left": insets.left, "right": insets.right]
